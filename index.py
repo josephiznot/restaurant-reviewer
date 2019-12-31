@@ -18,13 +18,16 @@ _RESTAURANT_ADDRESS_FIELD = 'restaurant_address'
 _RESTAURANT_REVIEWS_FIELD = 'restaurant_reviews'
 _RESTAURANT_RATING_FIELD = 'restaurant_rating'
 _RESTAURANT_URL = 'restaurantUrl'
+_RESTAURANT_NAME = 'restaurantName'
 
 def get_all_restaurant_info():
    """Returns a tuple of addresses, ratings, reviews"""
+   names = []
    addresses = []
    ratings = []
    reviews = []
    for restaurant in restaurants:
+      names.append(restaurant[_RESTAURANT_NAME])
       driver.get(restaurant[_RESTAURANT_URL])
       address = driver.find_elements_by_class_name(_RESTAURANT_ADDRESS_CLASSNAME)[0].text
       rating = driver.find_elements_by_class_name(_RATING_CLASSNAME)[0].text
@@ -33,12 +36,13 @@ def get_all_restaurant_info():
       ratings.append(rating)
       reviews.append(total_reviews)
    driver.close()
-   return (addresses, ratings, reviews)
+   return names, addresses, ratings, reviews
 
 def create_csv_file(all_restaurants_info):
-   addresses, ratings, reviews = all_restaurants_info
+   names, addresses, ratings, reviews = all_restaurants_info
    with open('restaurant_reviews.csv', 'w') as csv_file:
       csv_writer = csv.writer(csv_file, delimiter=',')
+      csv_writer.writerow(names)
       csv_writer.writerow(addresses)
       csv_writer.writerow(ratings)
       csv_writer.writerow(reviews)

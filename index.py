@@ -3,6 +3,9 @@ import os
 import csv
 import json
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 with open('restaurants.json', 'r') as restaurant_urls:
    restaurants = json.loads(restaurant_urls.read())
@@ -22,33 +25,28 @@ _RESTAURANT_NAME = 'restaurantName'
 
 def get_all_restaurant_info():
    """Returns a tuple of addresses, ratings, reviews"""
-   names = []
-   addresses = []
-   ratings = []
-   reviews = []
-   for restaurant in restaurants:
-      names.append(restaurant[_RESTAURANT_NAME])
-      driver.get(restaurant[_RESTAURANT_URL])
-      address = driver.find_elements_by_class_name(_RESTAURANT_ADDRESS_CLASSNAME)[0].text
+   restaurants_data = []
+   driver.implicitly_wait(10)
+   for i in range(len(restaurants)):
+      print('___________________________')
+      print(i)
+      driver.get(restaurants[i][_RESTAURANT_URL])
       rating = driver.find_elements_by_class_name(_RATING_CLASSNAME)[0].text
       total_reviews = driver.find_elements_by_class_name(_REVIEWS_CLASSNAME)[0].text
-      addresses.append(address)
-      ratings.append(rating)
-      reviews.append(total_reviews)
+      restaurant_info = restaurants[i][_RESTAURANT_NAME], rating, total_reviews,
+      print(restaurant_info)
+      restaurants_data.append(restaurant_info)
    driver.close()
-   return names, addresses, ratings, reviews
+   return restaurants_data
 
 def create_csv_file(all_restaurants_info):
-   names, addresses, ratings, reviews = all_restaurants_info
    with open('restaurant_reviews.csv', 'w') as csv_file:
       csv_writer = csv.writer(csv_file, delimiter=',')
-      csv_writer.writerow(names)
-      csv_writer.writerow(addresses)
-      csv_writer.writerow(ratings)
-      csv_writer.writerow(reviews)
+      for csv_row in all_restaurants_info:
+         csv_writer.writerow(csv_row)
 
-restaurants_data = get_all_restaurant_info()
+data = get_all_restaurant_info()
 
-print(restaurants_data)
+print(data)
 
-create_csv_file(restaurants_data)
+create_csv_file(data)

@@ -23,6 +23,9 @@ _RESTAURANT_RATING_FIELD = 'restaurant_rating'
 _RESTAURANT_URL = 'restaurantUrl'
 _RESTAURANT_NAME = 'restaurantName'
 
+def stringToReviewCount(total_reviews):
+   return total_reviews[0:-8]
+
 def get_all_restaurant_info():
    """Returns a tuple of addresses, ratings, reviews"""
    restaurants_data = []
@@ -34,7 +37,7 @@ def get_all_restaurant_info():
          driver.get(restaurants[i][_RESTAURANT_URL])
          rating = driver.find_elements_by_class_name(_RATING_CLASSNAME)[0].text
          total_reviews = driver.find_elements_by_class_name(_REVIEWS_CLASSNAME)[0].text
-         restaurant_info = restaurants[i][_RESTAURANT_NAME], rating, total_reviews,
+         restaurant_info = restaurants[i][_RESTAURANT_NAME], rating, stringToReviewCount(total_reviews),
       except:
          restaurant_info = '', '', ''
       print(restaurant_info)

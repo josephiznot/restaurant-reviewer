@@ -23,6 +23,11 @@ before continueing...
 Download the executable Chrome driver from
 [ChromeDriver-Download](https://sites.google.com/a/chromium.org/chromedriver/downloads).
 Download the current version of Chrome you are using. I happen to be using V79.
+Make sure that the Chromedriver version is the same as your Chrome browser version.
+To check what version of Chrome you have, enter the following in the URL of the 
+browser:
+
+chrome://version
 
 Note: Be sure to move the Chromedriver to the root directory of the project,
 so we can reference the relative path of it.

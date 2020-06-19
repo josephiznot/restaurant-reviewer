@@ -7,12 +7,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+_CHROME_WEB_DRIVER = "chromedriver_v83"
+
 with open('restaurants.json', 'r') as restaurant_urls:
    restaurants = json.loads(restaurant_urls.read())
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--disable-extensions')
-driver = webdriver.Chrome(executable_path=os.path.abspath("chromedriver"),   options=chrome_options) 
+driver = webdriver.Chrome(executable_path=os.path.abspath(_CHROME_WEB_DRIVER),   options=chrome_options) 
 
 _RATING_CLASSNAME = 'Aq14fc'
 _REVIEWS_CLASSNAME = 'z5jxId'
